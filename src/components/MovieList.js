@@ -36,7 +36,7 @@ const MovieList = ({ movies, onSort, onNextClick, onPrevClick, page }) => {
         <button onClick={handleFavoritesModalClick}>View Favorites</button>
       </div>
       <div className="movie-list">
-        <div>
+        <div className='movies'>
           {movies.map((movie) => (
             <div key={movie.imdbID}>
               <img
@@ -67,7 +67,7 @@ const MovieList = ({ movies, onSort, onNextClick, onPrevClick, page }) => {
           </div>
         </div>
       )}
-      <div>
+      <div className='pagination'>
         <button disabled={page === 1} onClick={onPrevClick}>
           Previous
         </button>

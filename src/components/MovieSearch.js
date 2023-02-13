@@ -4,42 +4,40 @@ import MovieList from './MovieList';
 
 const MovieSearch = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [filteredMovies, setFilteredMovies] = useState([]);
   const [page, setPage] = useState(0);
   const [sortOrder, setSortOrder] = useState('asc');
-  const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
-  const [filteredMovies, setFilteredMovies] = useState([]);
-  const [error, setError] = useState(null);
 
-  const pageSize = 6;
+  const pageSize = 5;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
       const response = await fetch(
-        `https://www.omdbapi.com/?apikey=420907a8&s=${searchTerm}&page=1`
+        `https://www.omdbapi.com/?apikey=420907a8&s=${searchTerm}&page=${
+          page + 1
+        }`
       );
       const data = await response.json();
 
       if (data.Response === 'True') {
-        setMovies(data.Search);
         setFilteredMovies(data.Search);
         setPage(0);
       } else {
-        setMovies([]);
         setFilteredMovies([]);
       }
     } catch (error) {
-      setError('An error occurred');
-      setMovies([]);
+      console.error(error);
+      alert('An error occurred');
     }
   };
 
   useEffect(() => {
     const totalPages = Math.ceil(filteredMovies.length / pageSize);
-    setPage(Math.min(page, totalPages - 1));
-  }, [filteredMovies, pageSize, page]);
+    setPage((prevPage) => Math.min(prevPage, totalPages));
+  }, [filteredMovies, pageSize]);
 
   const handleSort = (order) => {
     setSortOrder(order);
@@ -53,9 +51,7 @@ const MovieSearch = () => {
     const start = page * pageSize;
     const end = start + pageSize;
 
-    const sortedMovies = [
-      ...(filteredMovies.length > 0 ? filteredMovies : movies),
-    ].sort((a, b) =>
+    const sortedMovies = [...filteredMovies].sort((a, b) =>
       sortOrder === 'asc'
         ? a.Title.localeCompare(b.Title)
         : b.Title.localeCompare(a.Title)

@@ -9,29 +9,48 @@ $secondary-color: #7b89ae;
 
 // movie-list
 
-.movie-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin: 20px 0;
+.list-container {
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
 
-  div {
-    margin: 5px;
+  .movie-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
 
-    img {
-      cursor: pointer;
-      margin: 0.5rem;
-      width: 200px;
-      height: 300px;
-      border-radius: 8px;
-      box-shadow: 0px 0px 5px #9e2d5b;
+    .movies {
+      display: flex;
+      flex-wrap: wrap;
 
-      &:hover {
-        opacity: 0.7;
-        transform: scale(1.1);
+      div {
+        margin-right: 1rem;
+        margin-bottom: 1rem;
+
+        img {
+          width: 200px;
+          height: 300px;
+          object-fit: cover;
+          cursor: pointer;
+          transition: transform 0.2s ease;
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+          border-radius: 8px;
+
+          &:hover {
+            transform: scale(1.1);
+            opacity: 85%;
+          }
+        }
       }
     }
   }
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
 }
 
 // modal
@@ -129,6 +148,8 @@ $secondary-color: #7b89ae;
   }
 }
 
+// button
+
 button {
   background-color: $primary-color;
   color: #fff;
@@ -136,6 +157,7 @@ button {
   border-radius: 5px;
   padding: 5px 10px;
   margin: 0.4rem;
+  margin-bottom: .5rem;
   cursor: pointer;
 
   &:disabled {
