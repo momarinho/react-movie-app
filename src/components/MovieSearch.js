@@ -1,56 +1,78 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SearchForm from './SearchForm';
 import MovieList from './MovieList';
 
 const MovieSearch = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [movies, setMovies] = useState([]);
-  const [page, setPage] = useState(1);
-  const [sort, setSort] = useState('asc');
+  const [page, setPage] = useState(0);
+  const [sortOrder, setSortOrder] = useState('asc');
   const [selectedMovie, setSelectedMovie] = useState(null);
+  const [error, setError] = useState(null);
+  const pageSize = 6;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const response = await fetch(
-      `http://www.omdbapi.com/?apikey=420907a8&s=${searchTerm}&page=${page}&sort=${sort}&type=${selectedMovie}`
-    );
-    const data = await response.json();
+    try {
+      const response = await fetch(
+        `http://www.omdbapi.com/?apikey=420907a8&s=${searchTerm}&page=${
+          page + 1
+        }`
+      );
+      const data = await response.json();
 
-    if (data.Response === 'True') {
-      setMovies(data.Search);
-    } else {
+      if (data.Response === 'True') {
+        setMovies(data.Search);
+        setPage(0);
+      } else {
+        setMovies([]);
+      }
+    } catch (error) {
+      setError('An error ocurred');
       setMovies([]);
     }
   };
 
+  useEffect(() => {
+    handleSubmit();
+  }, [searchTerm]);
+
   const handleSort = (order) => {
-    setSort(order);
-    setMovies(
-      [...movies].sort((a, b) =>
-        order === 'asc'
-          ? a.Title.localeCompare(b.Title)
-          : b.Title.localeCompare(a.Title)
-      )
-    );
+    setSortOrder(order);
   };
 
   const handleMovieSelect = (movie) => {
     setSelectedMovie(movie);
   };
 
-  const handleNextClick = () => {
-    setPage(page + 1);
-    handleSubmit({ preventDefault: () => {}, searchTerm });
+  const displayedMovies = () => {
+    const start = page * pageSize;
+    const end = start + pageSize;
+
+    const sortedMovies = [...movies].sort((a, b) =>
+      sortOrder === 'asc'
+        ? a.Title.localeCompare(b.Title)
+        : b.Title.localeCompare(a.Title)
+    );
+
+    return sortedMovies.slice(start, end);
   };
 
-  const handlePrevClick = () => {
-    setPage(page - 1);
-    handleSubmit({ preventDefault: () => {}, searchTerm });
+  const totalPages = () => {
+    return Math.ceil(movies.length / pageSize);
+  };
+
+  const handleNextPage = () => {
+    if (page < totalPages() - 1) setPage(page + 1);
+  };
+
+  const handlePrevPage = () => {
+    if (page > 0) setPage(page - 1);
   };
 
   return (
-    <div className="App">
+    <div>
       <SearchForm
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
@@ -58,13 +80,16 @@ const MovieSearch = () => {
       />
 
       <MovieList
-        movies={movies}
+        movies={displayedMovies()}
         onSort={handleSort}
         onMovieSelect={handleMovieSelect}
-        onPrevClick={handlePrevClick}
-        onNextClick={handleNextClick}
+        onPrevClick={handlePrevPage}
+        onNextClick={handleNextPage}
         currentPage={page}
       />
+      <p>
+        {page + 1} of {totalPages()}
+      </p>
     </div>
   );
 };

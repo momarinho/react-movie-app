@@ -6,6 +6,7 @@ const SearchForm = ({ searchTerm, setSearchTerm, handleSubmit }) => (
       type="text"
       value={searchTerm}
       onChange={(event) => setSearchTerm(event.target.value)}
+      placeholder="Type to search..."
     />
     <button type="submit">Search</button>
   </form>

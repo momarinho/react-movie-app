@@ -4,6 +4,14 @@ import MovieDetail from './MovieDetail';
 const MovieList = ({ movies, onSort, onNextClick, onPrevClick, page }) => {
   const [selectedMovie, setSelectedMovie] = useState(null);
 
+  const handleMovieClick = (movie) => {
+    setSelectedMovie(movie);
+  };
+
+  const handleCloseClick = () => {
+    setSelectedMovie(null);
+  };
+
   return (
     <div>
       <h2>Movies</h2>
@@ -12,24 +20,23 @@ const MovieList = ({ movies, onSort, onNextClick, onPrevClick, page }) => {
       <div className="movie-list">
         <div>
           {movies.map((movie) => (
-            <p key={movie.imdbID}>
-              <p>{movie.Title}</p>
-              <p>{movie.Year}</p>
-              <p>{movie.Type}</p>
-              <img src={movie.Poster} alt={movie.Title} />;
-              <p>
-                <button onClick={() => setSelectedMovie(movie)}>More</button>
-                {selectedMovie === movie && (
-                  <button onClick={() => setSelectedMovie(null)}>Close</button>
-                )}
-              </p>
-            </p>
+            <div key={movie.imdbID}>
+              <hr />
+              <img
+                src={movie.Poster}
+                alt={movie.Title}
+                onClick={() => handleMovieClick(movie)}
+              />
+            </div>
           ))}
         </div>
       </div>
       {selectedMovie && (
-        <div className="movie-detail">
-          <MovieDetail movie={selectedMovie} />
+        <div className="modal">
+          <div className="modal-content">
+            <button onClick={handleCloseClick}>Close</button>
+            <MovieDetail movie={selectedMovie} />
+          </div>
         </div>
       )}
       <div>
