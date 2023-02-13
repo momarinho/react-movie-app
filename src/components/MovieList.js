@@ -21,7 +21,6 @@ const MovieList = ({ movies, onSort, onNextClick, onPrevClick, page }) => {
         <div>
           {movies.map((movie) => (
             <div key={movie.imdbID}>
-              <hr />
               <img
                 src={movie.Poster}
                 alt={movie.Title}
