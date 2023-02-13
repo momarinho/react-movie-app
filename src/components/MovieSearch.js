@@ -9,6 +9,7 @@ const MovieSearch = () => {
   const [sortOrder, setSortOrder] = useState('asc');
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [error, setError] = useState(null);
+  const [filteredMovies, setFilteredMovies] = useState([]);
   const pageSize = 6;
 
   const handleSubmit = async (event) => {
@@ -24,9 +25,11 @@ const MovieSearch = () => {
 
       if (data.Response === 'True') {
         setMovies(data.Search);
+        setFilteredMovies(data.Search);
         setPage(0);
       } else {
         setMovies([]);
+        setFilteredMovies([]);
       }
     } catch (error) {
       setError('An error ocurred');
@@ -42,6 +45,22 @@ const MovieSearch = () => {
     setSortOrder(order);
   };
 
+  const fuzzySearch = (searchTerm) => {
+    return movies.filter((movie) => {
+      const title = movie.Title.toLowerCase();
+      const search = searchTerm.toLowerCase();
+      let distance = 0;
+
+      for (let i = 0; i < search.length; i++) {
+        if (!title.includes(search[i])) {
+          distance++;
+        }
+      }
+
+      return distance <= 2;
+    });
+  };
+
   const handleMovieSelect = (movie) => {
     setSelectedMovie(movie);
   };
@@ -50,7 +69,9 @@ const MovieSearch = () => {
     const start = page * pageSize;
     const end = start + pageSize;
 
-    const sortedMovies = [...movies].sort((a, b) =>
+    const sortedMovies = [
+      ...(filteredMovies.length > 0 ? filteredMovies : movies),
+    ].sort((a, b) =>
       sortOrder === 'asc'
         ? a.Title.localeCompare(b.Title)
         : b.Title.localeCompare(a.Title)
