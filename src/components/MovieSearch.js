@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchForm from './SearchForm';
 import MovieList from './MovieList';
 
 const MovieSearch = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(0);
   const [sortOrder, setSortOrder] = useState('asc');
+  const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
-  const [error, setError] = useState(null);
   const [filteredMovies, setFilteredMovies] = useState([]);
+  const [error, setError] = useState(null);
+
   const pageSize = 6;
 
   const handleSubmit = async (event) => {
@@ -17,9 +18,7 @@ const MovieSearch = () => {
 
     try {
       const response = await fetch(
-        `http://www.omdbapi.com/?apikey=420907a8&s=${searchTerm}&page=${
-          page + 1
-        }`
+        `https://www.omdbapi.com/?apikey=420907a8&s=${searchTerm}&page=1`
       );
       const data = await response.json();
 
@@ -32,33 +31,18 @@ const MovieSearch = () => {
         setFilteredMovies([]);
       }
     } catch (error) {
-      setError('An error ocurred');
+      setError('An error occurred');
       setMovies([]);
     }
   };
 
   useEffect(() => {
-    handleSubmit();
-  }, [searchTerm]);
+    const totalPages = Math.ceil(filteredMovies.length / pageSize);
+    setPage(Math.min(page, totalPages - 1));
+  }, [filteredMovies, pageSize, page]);
 
   const handleSort = (order) => {
     setSortOrder(order);
-  };
-
-  const fuzzySearch = (searchTerm) => {
-    return movies.filter((movie) => {
-      const title = movie.Title.toLowerCase();
-      const search = searchTerm.toLowerCase();
-      let distance = 0;
-
-      for (let i = 0; i < search.length; i++) {
-        if (!title.includes(search[i])) {
-          distance++;
-        }
-      }
-
-      return distance <= 2;
-    });
   };
 
   const handleMovieSelect = (movie) => {
@@ -81,7 +65,7 @@ const MovieSearch = () => {
   };
 
   const totalPages = () => {
-    return Math.ceil(movies.length / pageSize);
+    return Math.ceil(filteredMovies.length / pageSize);
   };
 
   const handleNextPage = () => {
@@ -108,6 +92,7 @@ const MovieSearch = () => {
         onNextClick={handleNextPage}
         currentPage={page}
       />
+
       <p>
         {page + 1} of {totalPages()}
       </p>
