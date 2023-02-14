@@ -10,13 +10,14 @@ const MovieSearch = () => {
   const [selectedMovie, setSelectedMovie] = useState(null);
 
   const pageSize = 5;
+  const apiKey = '420907a8';
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
       const response = await fetch(
-        `https://www.omdbapi.com/?apikey=420907a8&s=${searchTerm}&page=${
+        `https://www.omdbapi.com/?apikey=${apiKey}&s=${searchTerm}&page=${
           page + 1
         }`
       );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FavoritesList from './Favorites';
 import MovieDetail from './MovieDetail';
 
@@ -15,8 +15,28 @@ const MovieList = ({ movies, onSort, onNextClick, onPrevClick, page }) => {
     setSelectedMovie(null);
   };
 
-  const handleFavorites = (movie) => {
-    setFavorites((prevFavorites) => [...prevFavorites, movie]);
+  const handleAddFavorites = (movie) => {
+    const newFavorites = [...favorites, movie];
+    setFavorites(newFavorites);
+
+    localStorage.setItem('favorites', JSON.stringify(newFavorites));
+  };
+
+  const handleRemoveFavorites = (movie) => {
+    const newFavorites = favorites.filter((fav) => fav.imdbID !== movie.imdbID);
+    setFavorites(newFavorites);
+    localStorage.setItem('favorites', JSON.stringify(newFavorites));
+  };
+
+  useEffect(() => {
+    const storedFavorites = JSON.parse(localStorage.getItem('favorites'));
+    if (storedFavorites) {
+      setFavorites(storedFavorites);
+    }
+  }, []);
+
+  const isFavorite = (movie) => {
+    return favorites.some((fav) => fav.imdbID === movie.imdbID);
   };
 
   const handleFavoritesModalClick = () => {
@@ -29,14 +49,13 @@ const MovieList = ({ movies, onSort, onNextClick, onPrevClick, page }) => {
 
   return (
     <div className="list-container">
-      <h2>Movies</h2>
-      <button onClick={() => onSort('asc')}>Sort by Title (A-Z)</button>
-      <button onClick={() => onSort('desc')}>Sort by Title (Z-A)</button>
       <div>
         <button onClick={handleFavoritesModalClick}>View Favorites</button>
       </div>
+      <button onClick={() => onSort('asc')}>Sort by Title (A-Z)</button>
+      <button onClick={() => onSort('desc')}>Sort by Title (Z-A)</button>
       <div className="movie-list">
-        <div className='movies'>
+        <div className="movies">
           {movies.map((movie) => (
             <div key={movie.imdbID}>
               <img
@@ -54,7 +73,9 @@ const MovieList = ({ movies, onSort, onNextClick, onPrevClick, page }) => {
             <button onClick={handleCloseClick}>Close</button>
             <MovieDetail
               movie={selectedMovie}
-              handleFavorites={handleFavorites}
+              handleAddFavorites={handleAddFavorites}
+              handleRemoveFavorites={handleRemoveFavorites}
+              isFavorite={isFavorite}
             />
           </div>
         </div>
@@ -67,7 +88,7 @@ const MovieList = ({ movies, onSort, onNextClick, onPrevClick, page }) => {
           </div>
         </div>
       )}
-      <div className='pagination'>
+      <div className="pagination">
         <button disabled={page === 1} onClick={onPrevClick}>
           Previous
         </button>

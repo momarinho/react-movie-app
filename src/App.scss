@@ -4,8 +4,17 @@
   text-align: center;
 }
 
+body {
+  background-color: aliceblue;
+}
+
 $primary-color: #2f426c;
 $secondary-color: #7b89ae;
+
+//input
+.input {
+  margin: 1rem;
+}
 
 // movie-list
 
@@ -92,6 +101,8 @@ $secondary-color: #7b89ae;
       flex-wrap: wrap;
       justify-content: space-around;
       align-items: center;
+      overflow-y: scroll;
+      max-height: 25rem;
       margin-top: 20px;
 
       .movie-detail-title {
@@ -100,7 +111,8 @@ $secondary-color: #7b89ae;
         margin: 0;
       }
 
-      svg {
+      .rfav-btn,
+      .fav-btn {
         cursor: pointer;
       }
 
@@ -157,7 +169,7 @@ button {
   border-radius: 5px;
   padding: 5px 10px;
   margin: 0.4rem;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
   cursor: pointer;
 
   &:disabled {
