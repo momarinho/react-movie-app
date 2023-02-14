@@ -70,7 +70,7 @@ const MovieList = ({ movies, onSort, onNextClick, onPrevClick, page }) => {
       {selectedMovie && (
         <div className="modal">
           <div className="modal-content">
-            <button onClick={handleCloseClick}>Close</button>
+            <button onClick={handleCloseClick}>X</button>
             <MovieDetail
               movie={selectedMovie}
               handleAddFavorites={handleAddFavorites}
@@ -83,7 +83,8 @@ const MovieList = ({ movies, onSort, onNextClick, onPrevClick, page }) => {
       {showFavoritesModal && (
         <div className="modal">
           <div className="modal-content">
-            <button onClick={handleCloseFavoritesModal}>Close</button>
+            <button onClick={handleCloseFavoritesModal}>X</button>
+
             <FavoritesList favorites={favorites} />
           </div>
         </div>

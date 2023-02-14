@@ -14,7 +14,7 @@ const MovieDetail = ({
   useEffect(() => {
     async function fetchPlot() {
       const response = await fetch(
-        `http://www.omdbapi.com/?apikey=${apiKey}&t=${movie.Title}&plot=full&type=${movie.Type}`
+        `http://www.omdbapi.com/?apikey=${apiKey}&t=${movie.Title}&plot=short&type=${movie.Type}`
       );
       const data = await response.json();
       setPlot(data.Plot);
@@ -26,15 +26,14 @@ const MovieDetail = ({
   return (
     <div className="movie-detail">
       <div>
-        <h2 className="movie-detail-title">{movie.Title}</h2>
-      </div>
-
-      <div>
         {isFavorite(movie) ? (
           <div
             className="rfav-btn"
             onClick={() => handleRemoveFavorites(movie)}
           >
+            <div>
+              <h2 className="movie-detail-title">{movie.Title}</h2>
+            </div>
             <p>Remove favorite</p>
             <svg
               width="1em"
@@ -51,6 +50,9 @@ const MovieDetail = ({
           </div>
         ) : (
           <div className="fav-btn" onClick={() => handleAddFavorites(movie)}>
+            <div>
+              <h2 className="movie-detail-title">{movie.Title}</h2>
+            </div>
             <p>Add favorites</p>
             <svg
               width="1em"
@@ -71,6 +73,7 @@ const MovieDetail = ({
       <div>
         <p>Year: {movie.Year}</p>
         <p>Type: {type}</p>
+        <hr/>
         <p>Plot: {plot}</p>
         <img src={movie.Poster} alt={movie.Title} />
       </div>

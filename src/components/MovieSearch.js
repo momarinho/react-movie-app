@@ -5,7 +5,11 @@ import MovieList from './MovieList';
 const MovieSearch = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredMovies, setFilteredMovies] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
+  const [genre, setGenre] = useState('');
+  const [rating, setRating] = useState('');
+  const [releaseDate, setReleaseDate] = useState('');
   const [sortOrder, setSortOrder] = useState('asc');
   const [selectedMovie, setSelectedMovie] = useState(null);
 
@@ -14,12 +18,11 @@ const MovieSearch = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
 
     try {
       const response = await fetch(
-        `https://www.omdbapi.com/?apikey=${apiKey}&s=${searchTerm}&page=${
-          page + 1
-        }`
+        `http://www.omdbapi.com/?apikey=${apiKey}&s=${searchTerm}&type=movie&y=${releaseDate}&r=${rating}&g=${genre}`
       );
       const data = await response.json();
 
@@ -29,9 +32,11 @@ const MovieSearch = () => {
       } else {
         setFilteredMovies([]);
       }
+      setLoading(false);
     } catch (error) {
       console.error(error);
       alert('An error occurred');
+      setLoading(false);
     }
   };
 
@@ -78,21 +83,32 @@ const MovieSearch = () => {
       <SearchForm
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
+        genre={genre}
+        setGenre={setGenre}
+        rating={rating}
+        setRating={setRating}
+        releaseDate={releaseDate}
+        setReleaseDate={setReleaseDate}
         handleSubmit={handleSubmit}
       />
+      {loading && <div>Loading...</div>}
 
-      <MovieList
-        movies={displayedMovies()}
-        onSort={handleSort}
-        onMovieSelect={handleMovieSelect}
-        onPrevClick={handlePrevPage}
-        onNextClick={handleNextPage}
-        currentPage={page}
-      />
+      {filteredMovies.length > 0 && (
+        <div>
+          <MovieList
+            movies={displayedMovies()}
+            onSort={handleSort}
+            onMovieSelect={handleMovieSelect}
+            onPrevClick={handlePrevPage}
+            onNextClick={handleNextPage}
+            currentPage={page}
+          />
 
-      <p>
-        {page + 1} of {totalPages()}
-      </p>
+          <p>
+            {page + 1} of {totalPages()}
+          </p>
+        </div>
+      )}
     </div>
   );
 };
