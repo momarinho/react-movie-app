@@ -78,42 +78,58 @@ const MovieSearch = () => {
     if (page > 0) setPage(page - 1);
   };
 
-  const clear = () => {
-    localStorage.clear();
-  };
+  // const clear = () => {
+  //   localStorage.clear();
+  // };
 
   return (
     <div>
-      <SearchForm
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        genre={genre}
-        setGenre={setGenre}
-        rating={rating}
-        setRating={setRating}
-        releaseDate={releaseDate}
-        setReleaseDate={setReleaseDate}
-        handleSubmit={handleSubmit}
-      />
-      
       {loading && <div>Loading...</div>}
 
-      {filteredMovies.length > 0 && (
+      {filteredMovies.length > 0 ? (
         <div>
-          <MovieList
-            movies={displayedMovies()}
-            onSort={handleSort}
-            onMovieSelect={handleMovieSelect}
-            onPrevClick={handlePrevPage}
-            onNextClick={handleNextPage}
-            currentPage={page}
-          />
+          <>
+            <SearchForm
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              genre={genre}
+              setGenre={setGenre}
+              rating={rating}
+              setRating={setRating}
+              releaseDate={releaseDate}
+              setReleaseDate={setReleaseDate}
+              handleSubmit={handleSubmit}
+            />
+            <MovieList
+              movies={displayedMovies()}
+              onSort={handleSort}
+              onMovieSelect={handleMovieSelect}
+              onPrevClick={handlePrevPage}
+              onNextClick={handleNextPage}
+              currentPage={page}
+            />
 
-          <p>
-            {page + 1} of {totalPages()}
-          </p>
-          <button>ClearLocalStorage{clear}</button>
+            <p>
+              {page + 1} of {totalPages()}
+            </p>
+            {/* <button onClick={clear}>ClearLocalStorage</button> */}
+          </>
         </div>
+      ) : (
+        <>
+          <h1>Movies and Series Search App</h1>
+          <SearchForm
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            genre={genre}
+            setGenre={setGenre}
+            rating={rating}
+            setRating={setRating}
+            releaseDate={releaseDate}
+            setReleaseDate={setReleaseDate}
+            handleSubmit={handleSubmit}
+          />
+        </>
       )}
     </div>
   );
