@@ -7,8 +7,6 @@ const MovieSearch = () => {
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
-  const [genre, setGenre] = useState('');
-  const [rating, setRating] = useState('');
   const [releaseDate, setReleaseDate] = useState('');
   const [sortOrder, setSortOrder] = useState('asc');
   const [selectedMovie, setSelectedMovie] = useState(null);
@@ -22,7 +20,7 @@ const MovieSearch = () => {
 
     try {
       const response = await fetch(
-        `http://www.omdbapi.com/?apikey=${apiKey}&s=${searchTerm}&type=movie&y=${releaseDate}&r=${rating}&g=${genre}`
+        `http://www.omdbapi.com/?apikey=${apiKey}&s=${searchTerm}&type=movie&y=${releaseDate}`
       );
       const data = await response.json();
 
@@ -92,10 +90,6 @@ const MovieSearch = () => {
             <SearchForm
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
-              genre={genre}
-              setGenre={setGenre}
-              rating={rating}
-              setRating={setRating}
               releaseDate={releaseDate}
               setReleaseDate={setReleaseDate}
               handleSubmit={handleSubmit}
@@ -121,10 +115,6 @@ const MovieSearch = () => {
           <SearchForm
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
-            genre={genre}
-            setGenre={setGenre}
-            rating={rating}
-            setRating={setRating}
             releaseDate={releaseDate}
             setReleaseDate={setReleaseDate}
             handleSubmit={handleSubmit}

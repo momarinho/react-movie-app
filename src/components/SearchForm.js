@@ -20,22 +20,7 @@ const SearchForm = ({
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <select value={genre} onChange={(e) => setGenre(e.target.value)}>
-          <option value="">Select genre</option>
-          <option value="action">Action</option>
-          <option value="comedy">Comedy</option>
-          <option value="drama">Drama</option>
-          <option value="horror">Horror</option>
-          <option value="romance">Romance</option>
-          <option value="thriller">Thriller</option>
-        </select>
-        <select value={rating} onChange={(e) => setRating(e.target.value)}>
-          <option value="">Select rating</option>
-          <option value="8">8+</option>
-          <option value="7">7+</option>
-          <option value="6">6+</option>
-          <option value="5">5+</option>
-        </select>
+
         <input
           type="text"
           placeholder="Release year"
