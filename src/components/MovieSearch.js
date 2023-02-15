@@ -78,6 +78,10 @@ const MovieSearch = () => {
     if (page > 0) setPage(page - 1);
   };
 
+  const clear = () => {
+    localStorage.clear();
+  };
+
   return (
     <div>
       <SearchForm
@@ -91,6 +95,7 @@ const MovieSearch = () => {
         setReleaseDate={setReleaseDate}
         handleSubmit={handleSubmit}
       />
+      
       {loading && <div>Loading...</div>}
 
       {filteredMovies.length > 0 && (
@@ -107,6 +112,7 @@ const MovieSearch = () => {
           <p>
             {page + 1} of {totalPages()}
           </p>
+          <button>ClearLocalStorage{clear}</button>
         </div>
       )}
     </div>

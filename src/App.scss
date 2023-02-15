@@ -2,26 +2,39 @@
   display: flex;
   justify-content: center;
   text-align: center;
+  font-family: 'Helvetica', sans-serif;
 }
 
 body {
-  background-color: aliceblue;
+  background-color: #222;
 }
 
-$primary-color: #2f426c;
-$secondary-color: #7b89ae;
+p {
+  color: white;
+}
 
-//input
+$primary-color: #1fb5a5;
+$secondary-color: #ffbb00;
+
 .input {
   margin: 1rem;
-}
+  border: none;
+  background-color: #444;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #fff;
 
-// movie-list
+  &::placeholder {
+    color: #999;
+  }
+}
 
 .list-container {
   h2 {
     font-size: 2rem;
     margin-bottom: 1rem;
+    color: $primary-color;
   }
 
   .movie-list {
@@ -34,8 +47,12 @@ $secondary-color: #7b89ae;
       flex-wrap: wrap;
 
       div {
+        margin-left: 1rem;
         margin-right: 1rem;
         margin-bottom: 1rem;
+        background-color: #333;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
 
         img {
           width: 200px;
@@ -47,11 +64,30 @@ $secondary-color: #7b89ae;
           border-radius: 8px;
 
           &:hover {
-            transform: scale(1.1);
+            transform: scale(0.9);
             opacity: 85%;
           }
         }
       }
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .movies div {
+      display: flex;
+      justify-content: center;
+      text-align: center;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .movies div {
+      width: 100%;
     }
   }
 }
@@ -60,6 +96,11 @@ $secondary-color: #7b89ae;
   display: flex;
   justify-content: center;
   margin-top: 2rem;
+
+  @media screen and (max-width: 480px) {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 // modal
@@ -70,29 +111,29 @@ $secondary-color: #7b89ae;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(206, 188, 184, 0.5);
+  background-color: rgba(0, 0, 0, 0.9);
 
   .modal-content {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #fff;
+    background-color: #2c2c54;
     padding: 10px;
     border-radius: 10px;
-    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.5);
 
     button {
-      background-color: $secondary-color;
+      background-color: #8e44ad;
       color: #fff;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       padding: 5px 10px;
       margin-bottom: 10px;
       cursor: pointer;
 
       &:hover {
-        background-color: darken($secondary-color, 10%);
+        background-color: #6c3483;
       }
     }
 
@@ -101,8 +142,8 @@ $secondary-color: #7b89ae;
       flex-direction: column;
       justify-content: space-between;
       margin-top: 1rem;
-      padding: .1rem;
-      border: 1px solid #ccc;
+      padding: 0.1rem;
+      border: 1px solid #636e72;
       border-radius: 5px;
       overflow-y: scroll;
       max-height: 25rem;
@@ -112,6 +153,7 @@ $secondary-color: #7b89ae;
         font-size: 1rem;
         font-weight: bold;
         text-transform: uppercase;
+        color: #fff;
       }
 
       .fav-btn,
@@ -125,7 +167,7 @@ $secondary-color: #7b89ae;
         border: none;
         border-radius: 5px;
         color: white;
-        background-color: #e50914;
+        background-color: #e74c3c;
         cursor: pointer;
         transition: background-color 0.2s ease-in-out;
 
@@ -142,15 +184,15 @@ $secondary-color: #7b89ae;
         }
 
         &:hover {
-          background-color: #bf0812;
+          background-color: #c0392b;
         }
       }
 
       .rfav-btn {
-        background-color: #333;
+        background-color: #3b1850;
 
         &:hover {
-          background-color: #222;
+          background-color: #8e44ad;
         }
       }
 
@@ -163,6 +205,7 @@ $secondary-color: #7b89ae;
         margin: 0;
         font-size: 1.2rem;
         line-height: 1.5;
+        color: #fff;
       }
     }
 
@@ -201,21 +244,16 @@ $secondary-color: #7b89ae;
 // button
 
 button {
-  background-color: $primary-color;
+  background-color: #8e44ad;
   color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   padding: 5px 10px;
-  margin: 0.4rem;
+  margin: 0.3rem;
   margin-bottom: 0.5rem;
   cursor: pointer;
 
-  &:disabled {
-    opacity: 0.5;
-    cursor: default;
-  }
-
   &:hover {
-    background-color: darken($primary-color, 10%);
+    background-color: #6c3483;
   }
 }

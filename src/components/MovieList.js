@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import FavoritesList from './Favorites';
 import MovieDetail from './MovieDetail';
 
@@ -6,6 +6,7 @@ const MovieList = ({ movies, onSort, onNextClick, onPrevClick, page }) => {
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [favorites, setFavorites] = useState([]);
   const [showFavoritesModal, setShowFavoritesModal] = useState(false);
+  const modalRef = useRef();
 
   const handleMovieClick = (movie) => {
     setSelectedMovie(movie);
@@ -47,6 +48,25 @@ const MovieList = ({ movies, onSort, onNextClick, onPrevClick, page }) => {
     setShowFavoritesModal(false);
   };
 
+  const handleOpenDetailsModal = (movie) => {
+    setShowFavoritesModal(false);
+    setSelectedMovie(movie);
+  };
+
+  const handleClickOutside = (event) => {
+    if (modalRef.current && !modalRef.current.contains(event.target)) {
+      handleCloseClick();
+      handleCloseFavoritesModal();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className="list-container">
       <div>
@@ -68,9 +88,10 @@ const MovieList = ({ movies, onSort, onNextClick, onPrevClick, page }) => {
         </div>
       </div>
       {selectedMovie && (
-        <div className="modal">
+        <div className="modal" ref={modalRef}>
           <div className="modal-content">
             <button onClick={handleCloseClick}>X</button>
+
             <MovieDetail
               movie={selectedMovie}
               handleAddFavorites={handleAddFavorites}
@@ -81,11 +102,15 @@ const MovieList = ({ movies, onSort, onNextClick, onPrevClick, page }) => {
         </div>
       )}
       {showFavoritesModal && (
-        <div className="modal">
+        <div className="modal" ref={modalRef}>
           <div className="modal-content">
             <button onClick={handleCloseFavoritesModal}>X</button>
 
-            <FavoritesList favorites={favorites} />
+            <FavoritesList
+              favorites={favorites}
+              handleOpenDetailsModal={handleOpenDetailsModal}
+              handleRemoveFavorites={handleRemoveFavorites}
+            />
           </div>
         </div>
       )}
